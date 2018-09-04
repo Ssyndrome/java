@@ -27,7 +27,10 @@ class CharTypeTest {
         assertEquals(EscapedChars.SINGLE_QUOTE.getValue(), singleQuote);
         assertEquals(EscapedChars.BACKSLASH.getValue(), backslash);
     }
-
+    /*
+    - what's the difference and relationship between code point and code unit?
+    -
+     */
     /*
      * - Could a char represent one unicode character? Or, in other words, could a char represent a code point?
      * - How many bits are needed to represents one code point in UTF-16? What about UTF-8 and UTF-32?

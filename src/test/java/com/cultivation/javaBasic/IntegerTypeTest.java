@@ -1,10 +1,8 @@
 package com.cultivation.javaBasic;
 
 import org.junit.jupiter.api.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class IntegerTypeTest {
 
@@ -23,6 +21,38 @@ class IntegerTypeTest {
         assertEquals(minimumSymbol, minimum);
     }
 
+//    @Test
+//    void should_be_negative_depending_on_first_digit() {
+//        // >>>
+//        final int testNumOf1 = 0xffff_ffff;
+//        final int testNumOfPositive1 = 0x0000_0001;
+//        final int testNumOf15 = 0xffff_fff1;
+//        final int testNumOfPositive15 = 0x0000_000f;
+//
+//        final int expectedOf1 = -1;
+//        final int expectedOfPositive1 = 1;
+//        final int expectedOf15 = -15;
+//        final int expectedOfPositive15 = 15;
+//
+//        assertEquals(expectedOf1, testNumOf1);
+//        assertEquals(expectedOfPositive1, testNumOfPositive1);
+//        assertEquals(expectedOf15, testNumOf15);
+//        assertEquals(expectedOfPositive15, testNumOfPositive15);
+//
+//    }
+
+    @Test
+    void should_be_negative_depending_on_first_digit() {
+        for (int i = Integer.MIN_VALUE; i < 0; i++) {
+            assertEquals(1, i >>> 31);
+        }
+
+        int target = 1;
+        for (int j = 0; j < 31; j++) {
+            assertTrue((target << j) > 0);
+        }
+    }
+
     @Test
     void should_get_range_of_primitive_short_type() {
         final short maximum = 32767;
@@ -36,6 +66,12 @@ class IntegerTypeTest {
 
         assertEquals(maximumSymbol, maximum);
         assertEquals(minimumSymbol, minimum);
+
+        assertTrue(-(0x8000_0000) < 0);
+        assertTrue(-(0x7fff_ffff) < 0);
+        assertEquals(-(0xffff_ffff), 1);
+        assertTrue(-(0x1) < 0);
+        assertTrue((0x1) > 0);
     }
 
     @Test
@@ -124,10 +160,11 @@ class IntegerTypeTest {
         assertEquals(expectedResult2, result2, +1.0E-05);
     }
 
+
     @Test
     void should_truncate_number_when_casting() {
         final int integer = 0x0123_4567;
-        final short smallerInteger = (short)integer;
+        final short smallerInteger = (short) integer;
 
         // TODO: please modify the following lines to pass the test
         // <!--start
@@ -135,6 +172,20 @@ class IntegerTypeTest {
         // --end-->
 
         assertEquals(expected, smallerInteger);
+    }
+
+    @Test
+    void should_influence_the_number_when_truncate() {
+        final int integer = 0x8000_1234;
+        final int integer2 = 0x0000_1234;
+
+        final short smallerInteger = (short) integer;
+        final short smallerInteger2 = (short) integer2;
+
+        final short expected = 0x1234;
+
+        assertEquals(expected, smallerInteger);
+        assertEquals(expected, smallerInteger2);
     }
 
     @Test

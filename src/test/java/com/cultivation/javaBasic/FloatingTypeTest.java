@@ -10,8 +10,37 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class FloatingTypeTest {
     @Test
     void should_not_get_rounded_result_if_convert_floating_number_to_integer() {
-        final float floatingPointNumber = 2.75f;
+        final float floatingPointNumber = 3333333333333333333333333333333333332.75f;
         final int integer = (int)floatingPointNumber;
+
+        final short integerShort = (short) floatingPointNumber;
+        final  byte integerByte = (byte) floatingPointNumber;
+        final long integerLong = (long)floatingPointNumber;
+
+        final double byteToDouble = integerByte;
+        final double shortToDouble = integerShort;
+        final double longToDouble = integerLong;
+        final double integerDouble = floatingPointNumber;
+
+        final int byteToInt = integerByte;
+        final int shortToInt = integerShort;
+        final int longToInt = (int) integerLong;
+        final int doubleToInt = (int) integerDouble;
+
+        final short byteToShort = integerByte;
+        final short intToShort = (short) integer;
+        final short longToShort = (short) integerLong;
+        final short doubleToShort = (short) integerDouble;
+
+        final byte shortToByte = integerShort;
+        final byte intToByte = (byte) integer;
+        final byte longToByte = (byte) integerLong;
+        final byte doubleToByte = (byte)integerDouble;
+
+        final long byteToLong = integerByte;
+        final long shortToLong = integerShort;
+        final long intToLong = integer;
+        final long doubleToLong = (long) integerDouble;
 
         // TODO: Please change the result to pass the test.
         // <!--start
