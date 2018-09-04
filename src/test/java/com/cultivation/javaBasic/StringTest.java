@@ -3,7 +3,14 @@ package com.cultivation.javaBasic;
 import org.junit.jupiter.api.Test;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.awt.image.BufferedImage;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Optional;
+import org.apache.commons.text.StringEscapeUtils;
+
+import java.util.stream.Stream;
+
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +26,7 @@ class StringTest {
         //
         // It is really easy to pass the test. But you have to tell why.
         // <--start
-        final Optional<Boolean> areSame = Optional.empty();
+        final Optional<Boolean> areSame = Optional.of(false);
         // --end-->
 
         assertEquals("The new string", modifiedString);
@@ -36,7 +43,7 @@ class StringTest {
         //
         // It is really easy to pass the test. But you have to tell why.
         // <--start
-        final Optional<Boolean> areSame = Optional.empty();
+        final Optional<Boolean> areSame = Optional.of(false);
         // --end-->
 
         assertEquals("The string with tailing space.", modifiedString);
@@ -54,7 +61,7 @@ class StringTest {
         //
         // It is really easy to pass the test. But you have to tell why.
         // <--start
-        final Optional<Boolean> areSame = Optional.empty();
+        final Optional<Boolean> areSame = Optional.of(false);
         // --end-->
 
         assertEquals("Part one. Part two.", originalString);
@@ -68,7 +75,7 @@ class StringTest {
 
         // TODO: Take part of the original string according to expectation.
         // <--start
-        final String partOfString = null;
+        final String partOfString = originalString.substring(5);
         // --end-->
 
         final String expectedString = "is great";
@@ -83,7 +90,7 @@ class StringTest {
 
         // TODO: Take part of the original string according to expectation.
         // <--start
-        final String partOfString = null;
+        final String partOfString = originalString.substring(5,7);
         // --end-->
 
         final String expectedString = "is";
@@ -106,7 +113,7 @@ class StringTest {
 
         // TODO: Extract words in the sentence.
         // <--Start
-        String[] words = null;
+        String[] words = sentence.split(" ");
         // --End-->
 
         assertArrayEquals(new String[] {"This", "is", "Mike"}, words);
@@ -119,7 +126,7 @@ class StringTest {
 
         // TODO: Extract words in the sentence.
         // <--Start
-        String[] words = null;
+        String[] words = sentence.split("/");
         // --End-->
 
         assertArrayEquals(new String[] {"This", "is", "Mike"}, words);
@@ -133,7 +140,7 @@ class StringTest {
 
         // TODO: Create string using StringBuilder
         // <--Start
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder("|---|\n").append("|   |\n").append("|---|\n");
         // --End-->
 
         final String expected =
@@ -152,6 +159,7 @@ class StringTest {
         int sum = 0;
         // TODO: Write some code to calculate the checksum of the string. The checksum is the sum of each string char.
         // <--Start
+        sum = Arrays.stream(text.split("")).mapToInt(i->i.hashCode()).reduce(0,(a,b)->a+b);
         // --End-->
 
         assertEquals(3655, sum);
@@ -167,7 +175,7 @@ class StringTest {
         // こ - U+3053
         // れ - U+308c
         // <--Start
-        final String actual = null;
+        final String actual = new StringBuilder().append('\u306a').append('\u306b').append('\u3053').append('\u308c').toString();//StringEscapeUtils.unescapeXml("\\u306a\\u306b\\u3053\\u®308c");//new String("\\U+306a\\U+306b\\U+3053\\U+308c".getBytes(StandardCharsets.ISO_8859_1),StandardCharsets.ISO_8859_1);
         // --End-->
 
         assertEquals(expected, actual);
@@ -180,7 +188,7 @@ class StringTest {
 
         // TODO: Modify the following code to create new string from original String
         // <--Start
-        final String reversed = null;
+        final String reversed = new StringBuilder(original).reverse().toString();
         // --End-->
 
         assertEquals("654321", reversed);
@@ -197,8 +205,8 @@ class StringTest {
 
         // TODO: Please change the value of the following 2 lines to pass the test.
         // <--start
-        Optional<Boolean> actualResultOfEqual = Optional.empty();
-        Optional<Boolean> actualResultOfEqualIgnoreCase = Optional.empty();
+        Optional<Boolean> actualResultOfEqual = Optional.of(false);
+        Optional<Boolean> actualResultOfEqualIgnoreCase = Optional.of(true);
         // --end-->
 
         assertEquals(equalResult, actualResultOfEqual);
@@ -213,9 +221,9 @@ class StringTest {
         // TODO: please modify the following code to pass the test
         // <--start
         // TODO: please write down the result directly.
-        final int expectedCharLength = 0;
+        final int expectedCharLength = 39;
         // TODO: please call some method to calculate the result.
-        final int actualCodePointLength = 0;
+        final int actualCodePointLength = (int) withSurrogatePairs.codePoints().count();
         // --end-->
 
         assertEquals(expectedCharLength, withSurrogatePairs.length());
@@ -243,7 +251,7 @@ class StringTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expectedText = null;
+        final String expectedText = "Hello, Harry. Next year, you will be 23.";
         // --end-->
 
         assertEquals(expectedText, text);
@@ -252,7 +260,8 @@ class StringTest {
     private int[] getCodePointsFromString(String withSurrogatePairs) {
         // TODO: please implement the method to the pass the test
         // <--start
-        throw new NotImplementedException();
+        return withSurrogatePairs.codePoints().toArray();
+//        throw new NotImplementedException();
         // --end-->
     }
 
