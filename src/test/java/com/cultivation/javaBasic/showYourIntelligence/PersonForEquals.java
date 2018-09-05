@@ -1,5 +1,6 @@
 package com.cultivation.javaBasic.showYourIntelligence;
 
+import com.cultivation.javaBasic.util.Person;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Objects;
@@ -36,7 +37,12 @@ public class PersonForEquals {
     public boolean equals(Object obj) {
         // TODO: please modify the following code to pass the test
         // <--start
-        throw new NotImplementedException();
+//        obj = (PersonForEquals) obj;
+        if (obj == null) return false;
+        if (!(obj instanceof PersonForEquals)) return false;
+        return this.yearOfBirth == ((PersonForEquals) obj).yearOfBirth
+                && this.name.equals(((PersonForEquals) obj).name)
+                && this.hashCode() == obj.hashCode();
         // --end-->
     }
 
@@ -44,7 +50,9 @@ public class PersonForEquals {
     public int hashCode() {
         // TODO: please modify the following code to pass the test
         // <--start
-        throw new NotImplementedException();
+        return this.name.hashCode()+this.yearOfBirth;
+        //(int)Integer.valueOf(this.name.codePoints().mapToObj(String::valueOf).reduce("", String::concat).concat(String.valueOf(this.yearOfBirth)));
+//        throw new NotImplementedException();
         // --end-->
     }
 }

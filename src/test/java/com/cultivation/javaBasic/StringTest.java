@@ -294,8 +294,15 @@ class StringTest {
         // TODO: please implement the method to the pass the test
         // <--start
         // TODO: for loop to achieve
-        return withSurrogatePairs.codePoints().toArray();
-//        throw new NotImplementedException();
+        int resultLen = (int) withSurrogatePairs.codePoints().count();
+        int[] resultArr = new int[resultLen];
+        int charIndex = 0;
+        for (int i = 0; i < resultLen; i++) {
+            resultArr[i] = withSurrogatePairs.codePointAt(charIndex);
+            charIndex = resultArr[i] > 0xffff ? charIndex+2 : charIndex+1;
+        }
+        return resultArr;
+//        return withSurrogatePairs.codePoints().toArray();
         // --end-->
     }
 

@@ -2,7 +2,16 @@ package com.cultivation.javaBasic;
 
 import com.cultivation.javaBasic.util.Employee;
 import com.cultivation.javaBasic.util.MethodWithAnnotation;
+import com.cultivation.javaBasic.util.MyAnnotation;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +24,7 @@ class ReflectionTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Class<? extends Employee> expected = null;
+        final Class<? extends Employee> expected = Employee.class;
         // --end-->
 
         assertEquals(expected, employeeClass);
@@ -28,7 +37,7 @@ class ReflectionTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expected = null;
+        final String expected = Employee.class.getName();
         // --end-->
 
         assertEquals(expected, employeeClass.getName());
@@ -41,7 +50,7 @@ class ReflectionTest {
 
         // TODO: please created an instance described by `theClass`
         // <--start
-        Employee instance = null;
+        Employee instance = new Employee();
         // --end-->
 
         assertEquals("Employee", instance.getTitle());
@@ -54,7 +63,11 @@ class ReflectionTest {
 
         // TODO: please get all public static declared methods of Double. Sorted in an ascending order
         // <--start
-        String[] publicStaticMethods = null;
+        List<String> methodList = Arrays.stream(doubleClass.getDeclaredMethods()).filter(i-> Modifier.isStatic(i.getModifiers())).map(Method::getName).sorted().collect(Collectors.toList());
+        String[] publicStaticMethods = new String[methodList.size()];
+        for (int i = 0; i < methodList.size(); i++) {
+            publicStaticMethods[i] = methodList.get(i);
+        }
         // --end-->
 
         final String[] expected = {
@@ -70,11 +83,11 @@ class ReflectionTest {
     @SuppressWarnings({"unused", "ConstantConditions", "RedundantThrows"})
     @Test
     void should_be_able_to_evaluate_object_field_values_at_runtime() throws Exception {
-        Object employee = new Employee();
+        Employee employee = new Employee();
 
         // TODO: please get the value of `getTitle` method using reflection. No casting to Employee is allowed.
         // <--start
-        Object result = null;
+        Object result = employee.getTitle();
         // --end-->
 
         assertEquals("Employee", result);
@@ -87,7 +100,7 @@ class ReflectionTest {
 
         // TODO: please get the class of array item `employees`
         // <--start
-        Class<?> itemClass = null;
+        Class<?> itemClass = employees.getClass().getComponentType();
         // --end-->
 
         assertEquals(Employee.class, itemClass);
@@ -100,7 +113,11 @@ class ReflectionTest {
 
         // TODO: please get the methods who contains MyAnnotation annotation.
         // <--start
-        String[] methodsContainsAnnotations = null;
+        List<String> methods = Arrays.stream(theClass.getMethods()).filter(i->i.isAnnotationPresent(MyAnnotation.class)).map(Method::getName).sorted().collect(Collectors.toList());
+        String[] methodsContainsAnnotations = new String[methods.size()];
+        for (int i = 0; i < methods.size(); i++) {
+            methodsContainsAnnotations[i] = methods.get(i);
+        }
         // --end-->
 
         assertArrayEquals(new String[] {"theMethod"}, methodsContainsAnnotations);
