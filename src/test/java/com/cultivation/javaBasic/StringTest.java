@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.image.BufferedImage;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class StringTest {
     @SuppressWarnings({"StringEquality", "ConstantConditions"})
@@ -62,8 +64,10 @@ class StringTest {
         // It is really easy to pass the test. But you have to tell why.
         // <--start
         final Optional<Boolean> areSame = Optional.of(false);
+        boolean[] test = new boolean[2];
         // --end-->
 
+        assertEquals(test[0], false);
         assertEquals("Part one. Part two.", originalString);
         assertEquals(areSame.get(), originalString == copyOfOriginalString);
     }
@@ -140,7 +144,15 @@ class StringTest {
 
         // TODO: Create string using StringBuilder
         // <--Start
-        StringBuilder builder = new StringBuilder("|---|\n").append("|   |\n").append("|---|\n");
+        StringBuilder builder = new StringBuilder();
+        for (int row = 1; row <= height; row++) {
+                builder.append("|");
+
+            for (int column = 3; column <= width; column++) {
+                builder.append(row == 1 || row == height ? "-" : " ");
+            }
+                builder.append("|\n");
+        }
         // --End-->
 
         final String expected =
@@ -159,7 +171,8 @@ class StringTest {
         int sum = 0;
         // TODO: Write some code to calculate the checksum of the string. The checksum is the sum of each string char.
         // <--Start
-        sum = Arrays.stream(text.split("")).mapToInt(i->i.hashCode()).reduce(0,(a,b)->a+b);
+        sum = Arrays.stream(text.split("")).mapToInt(String::hashCode).sum();
+//        sum = text.chars().sum();
         // --End-->
 
         assertEquals(3655, sum);
@@ -175,7 +188,8 @@ class StringTest {
         // こ - U+3053
         // れ - U+308c
         // <--Start
-        final String actual = new StringBuilder().append('\u306a').append('\u306b').append('\u3053').append('\u308c').toString();//StringEscapeUtils.unescapeXml("\\u306a\\u306b\\u3053\\u®308c");//new String("\\U+306a\\U+306b\\U+3053\\U+308c".getBytes(StandardCharsets.ISO_8859_1),StandardCharsets.ISO_8859_1);
+        final String actual = "\u306a\u306b\u3053\u308c";
+        //new StringBuilder().append('\u306a').append('\u306b').append('\u3053').append('\u308c').toString();//StringEscapeUtils.unescapeXml("\\u306a\\u306b\\u3053\\u®308c");//new String("\\U+306a\\U+306b\\U+3053\\U+308c".getBytes(StandardCharsets.ISO_8859_1),StandardCharsets.ISO_8859_1);
         // --End-->
 
         assertEquals(expected, actual);
@@ -192,6 +206,25 @@ class StringTest {
         // --End-->
 
         assertEquals("654321", reversed);
+    }
+
+    @Test
+    void should_change_the_value_in_a_final_array() {
+        final char[] value = new char[]{'6','5','4','3','2','1'};
+        // When new a originalValue equal value, it goes wrong.
+        final char[] originalValue = new char[]{'6','5','4','3','2','1'};// Arrays.copyOf(value);
+
+        int point = value.length-1;
+        for (int i = 0; i < value.length; i++) {
+            value[i] = originalValue[point];
+            point--;
+        }
+
+        char[] expectCanChange = new char[]{'1','2','3','4','5','6'};
+
+        for (int i = 0; i < expectCanChange.length; i++) {
+            assertEquals(expectCanChange[i], value[i]);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -260,6 +293,7 @@ class StringTest {
     private int[] getCodePointsFromString(String withSurrogatePairs) {
         // TODO: please implement the method to the pass the test
         // <--start
+        // TODO: for loop to achieve
         return withSurrogatePairs.codePoints().toArray();
 //        throw new NotImplementedException();
         // --end-->

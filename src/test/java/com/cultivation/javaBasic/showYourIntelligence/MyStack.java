@@ -40,7 +40,7 @@ public class MyStack {
         // TODO: You SHOULD NOT USE COLLECTIONS OTHER THAN ARRAY.
         // <--start
         capacity = newCapacity;
-        storage = Arrays.copyOf(storage,capacity);
+        storage = Arrays.copyOf(storage, capacity);
 //        throw new NotImplementedException();
         // --end-->
     }

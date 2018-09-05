@@ -11,6 +11,18 @@ public class InitializationOrderClass {
         logger.clear();
     }
 
+    {
+        logger.add("Initialization Block");
+    }
+
+    public static void toTestStaticOrder() {
+        logger.add("Suprising Block");
+    }
+
+    {
+        logger.add("To test the initialization Block with order");
+    }
+
     public static String[] getLogs() {
         return logger.toArray(new String[0]);
     }
@@ -20,10 +32,6 @@ public class InitializationOrderClass {
     private Object initField() {
         logger.add("Field Initializer");
         return null;
-    }
-
-    {
-        logger.add("Initialization Block");
     }
 
     public InitializationOrderClass() {

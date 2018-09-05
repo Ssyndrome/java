@@ -13,34 +13,43 @@ class FloatingTypeTest {
         final float floatingPointNumber = 3333333333333333333333333333333333332.75f;
         final int integer = (int)floatingPointNumber;
 
-        final short integerShort = (short) floatingPointNumber;
         final  byte integerByte = (byte) floatingPointNumber;
+        final short integerShort = (short) floatingPointNumber;
         final long integerLong = (long)floatingPointNumber;
-
-        final double byteToDouble = integerByte;
-        final double shortToDouble = integerShort;
-        final double longToDouble = integerLong;
         final double integerDouble = floatingPointNumber;
+        final short integerShort2 = (short)0x80;
 
-        final int byteToInt = integerByte;
-        final int shortToInt = integerShort;
-        final int longToInt = (int) integerLong;
-        final int doubleToInt = (int) integerDouble;
+        final byte shortToByte = (byte) integerShort2;
+        final byte intToByte = (byte) integer;
+        final byte longToByte = (byte) integerLong;
+        final byte doubleToByte = (byte)integerDouble;
 
         final short byteToShort = integerByte;
         final short intToShort = (short) integer;
         final short longToShort = (short) integerLong;
         final short doubleToShort = (short) integerDouble;
 
-        final byte shortToByte = integerShort;
-        final byte intToByte = (byte) integer;
-        final byte longToByte = (byte) integerLong;
-        final byte doubleToByte = (byte)integerDouble;
+        final int byteToInt = integerByte;
+        final int shortToInt = integerShort;
+        final int longToInt = (int) integerLong;
+        final int doubleToInt = (int) integerDouble;
 
         final long byteToLong = integerByte;
         final long shortToLong = integerShort;
         final long intToLong = integer;
         final long doubleToLong = (long) integerDouble;
+
+        final double byteToDouble = integerByte;
+        final double shortToDouble = integerShort;
+        final double intToDouble = integer;
+        final double longToDouble = integerLong;
+
+        final float byteToFloat = integerByte;
+        final float shortToFloat = integerShort;
+        final float intToFloat = integer;
+        final float longToFloat = integerLong;
+        final float doubleToFloat = (float) integerDouble;
+
 
         // TODO: Please change the result to pass the test.
         // <!--start

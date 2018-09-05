@@ -3,9 +3,12 @@ package com.cultivation.javaBasic;
 import com.cultivation.javaBasic.util.*;
 import org.junit.jupiter.api.Test;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Optional;
 
+import static java.time.LocalDate.now;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,7 +23,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Boolean> expected = Optional.empty();
+        final Optional<Boolean> expected = Optional.of(true);
         // --end-->
 
         assertEquals(expected.get(), referenceToSameObject);
@@ -36,7 +39,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Boolean> expected = Optional.empty();
+        final Optional<Boolean> expected = Optional.of(false);
         // --end-->
 
         assertEquals(expected.get(), referenceToSameObject);
@@ -49,9 +52,9 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expectedName = "What";
-        final int expectedYearOfBirth = 479;
-        final LocalDate expectedRegisteredDate = LocalDate.now();
+        final String expectedName = null;
+        final int expectedYearOfBirth = 0;
+        final LocalDate expectedRegisteredDate = null;
         // --end-->
 
         assertEquals(expectedName, instance.getName());
@@ -67,7 +70,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final int expected = 0;
+        final int expected = 5;
         // --end-->
 
         assertEquals(expected, value);
@@ -89,7 +92,7 @@ class ObjectTest {
         // TODO: please modify the following code to pass the test.
         // You can only choose from `sameReference` and `instanceCreatedByMethod`
         // <--start
-        final Object expected = null;
+        final Object expected = sameReference;
         // --end-->
 
         assertEquals(expected, objectReference);
@@ -103,7 +106,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expected = null;
+        final String expected = "Updated Name";
         // --end-->
 
         assertEquals(expected, instance.getName());
@@ -113,11 +116,11 @@ class ObjectTest {
     void should_choose_method_at_compile_time() {
         OverloadingFixture fixture = new OverloadingFixture();
 
-        String actual = fixture.methodWithOneParameter((Object)"I am a string");
+        String actual = fixture.methodWithOneParameter((Object) "I am a string");
 
         // TODO: please modify the following code to pass the test. You should write the result directly.
         // <--start
-        final String expected = null;
+        final String expected = "methodWithOneParameter(Object)";
         // --end-->
 
         assertEquals(expected, actual);
@@ -133,7 +136,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test. You should write the result directly.
         // <--start
-        final String expected = null;
+        final String expected = "methodWithTwoParameters(String, int)";
         // --end-->
 
         assertEquals(expected, actual);
@@ -145,7 +148,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expected = null;
+        final String expected = "Untitled";
         // --end-->
 
         assertEquals(expected, instance.getName());
@@ -160,7 +163,13 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String[] expected = {};
+        final String[] expected = {
+                "Initialization Block",
+                "To test the initialization Block with order",
+                "Field Initializer",
+                "Constructor with argument",
+                "Default constructor"
+        };
         // --end-->
 
         assertArrayEquals(expected, logs);
@@ -172,7 +181,7 @@ class ObjectTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expected = null;
+        final String expected = "1\n2\n3\n";
         // --end-->
 
         assertEquals(expected, message);
@@ -182,11 +191,11 @@ class ObjectTest {
     @SuppressWarnings("RedundantArrayCreation")
     @Test
     void should_get_message_of_var_length_parameters_2() {
-        final String message = getMessageOfVarLengthParameters(new Object[] {1, 2, 3});
+        final String message = getMessageOfVarLengthParameters(new Object[]{1, 2, 3});
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expected = null;
+        final String expected = "1\n2\n3\n";
         // --end-->
 
         assertEquals(expected, message);

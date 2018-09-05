@@ -2,8 +2,7 @@ package com.cultivation.javaBasic;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BooleanOperatorsTest {
 
@@ -74,6 +73,19 @@ class BooleanOperatorsTest {
         // --end-->
 
         assertEquals(expected, value | mask);
+    }
+
+    @Test
+    void should_check_priority_of_operator() {
+
+        boolean testNotThanOr =  true | !true;
+        assertTrue(testNotThanOr);
+
+        boolean testAndThanOr = false & true | true;
+            assertTrue(testAndThanOr);
+
+        boolean testNotThanAnd = false & !true;
+        assertFalse(testNotThanAnd);
     }
 
     @Test
