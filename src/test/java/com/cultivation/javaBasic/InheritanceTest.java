@@ -22,6 +22,13 @@ class InheritanceTest {
     }
 
     @Test
+    void should_use_parents_static_method_directly() {
+        ChildrenTest childrenTest = new ChildrenTest();
+        String expectCanBeInherited = "LN";
+        assertEquals(expectCanBeInherited, ChildrenTest.getName());
+    }
+
+    @Test
     void should_call_super_class_constructor() {
         DerivedFromSuperClassWithDefaultConstructor instance = new DerivedFromSuperClassWithDefaultConstructor();
 
@@ -90,23 +97,20 @@ class InheritanceTest {
     @SuppressWarnings({"ConstantConditions", "RedundantCast", "UnnecessaryLocalVariable"})
     @Test
     void should_use_caution_when_dealing_with_array_type() {
-        DerivedFromSuperClassWithDefaultConstructor[] array = new DerivedFromSuperClassWithDefaultConstructor[4];
-        SuperClassWithDefaultConstructor[] arrayWithBaseType = (SuperClassWithDefaultConstructor[])array;
+        ChildrenTest[] childrenArray = new ChildrenTest[4];
+        ParentTest[] parentArray = (ParentTest[]) childrenArray;
+        EggTest eggTest = new EggTest();
 
-        boolean willThrow = false;
+        boolean willError = false;
 
         try {
-            arrayWithBaseType[arrayWithBaseType.length - 1] = new SuperClassWithDefaultConstructor();
-        } catch (Exception error) {  // java.lang.ArrayStoreException: com.cultivation.javaBasic.util.SuperClassWithDefaultConstructor
-            willThrow = true;
+            parentArray[parentArray.length - 1] = new ParentTest();
+        } catch (Exception error) {
+            error.printStackTrace();
+            willError = true;
         }
 
-        // TODO: please modify the following code to pass the test
-        // <--start
-        final Optional<Boolean> expected = Optional.of(true);
-        // --end-->
-
-        assertEquals(expected.get(), willThrow);
+        assertTrue(willError);
     }
 
     @Test
@@ -117,11 +121,31 @@ class InheritanceTest {
         boolean willThrow = false;
 
         try {
-            arrayOfNumber[3] = new Integer(1);
+            arrayOfNumber[3] = new Number() {
+                @Override
+                public int intValue() {
+                    return 0;
+                }
+
+                @Override
+                public long longValue() {
+                    return 0;
+                }
+
+                @Override
+                public float floatValue() {
+                    return 0;
+                }
+
+                @Override
+                public double doubleValue() {
+                    return 0;
+                }
+            };
         } catch (Exception error) {
             willThrow = true;
         }
-        assertFalse(willThrow);
+        assertTrue(willThrow);
     }
 
     @SuppressWarnings("UnnecessaryLocalVariable")
@@ -178,6 +202,8 @@ class InheritanceTest {
         final Optional<Boolean> expectedResult2 = Optional.of(false);
         // --end-->
 
+        // shenyong
+        System.out.print(integer.getClass().getName());
         assertEquals(expectedResult1.get(), integer instanceof Integer );
         assertEquals(expectedResult2.get(), integer instanceof Long );
     }

@@ -5,4 +5,8 @@ public class DerivedFromBaseClassForOverridingCallingSuper extends BaseClassForO
     public String getName() {
         return super.getName() + "->DerivedFromBaseClassForOverridingCallingSuper";
     }
+
+    public String getSuperSuper() {
+        return super.getClass().getSuperclass().toString();
+    }
 }
