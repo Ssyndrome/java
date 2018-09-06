@@ -202,7 +202,7 @@ class InheritanceTest {
         final Optional<Boolean> expectedResult2 = Optional.of(false);
         // --end-->
 
-        // shenyong
+        // be cautious to use instanceof
         System.out.print(integer.getClass().getName());
         assertEquals(expectedResult1.get(), integer instanceof Integer );
         assertEquals(expectedResult2.get(), integer instanceof Long );

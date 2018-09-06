@@ -37,12 +37,22 @@ public class PersonForEquals {
     public boolean equals(Object obj) {
         // TODO: please modify the following code to pass the test
         // <--start
-//        obj = (PersonForEquals) obj;
-        if (obj == null) return false;
-        if (!(obj instanceof PersonForEquals)) return false;
-        return this.yearOfBirth == ((PersonForEquals) obj).yearOfBirth
-                && this.name.equals(((PersonForEquals) obj).name)
-                && this.hashCode() == obj.hashCode();
+        if (obj == this) return true;
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        if (!this.getName().equals(((PersonForEquals) obj).getName())) {
+            return false;
+        }
+        if (this.yearOfBirth == ((PersonForEquals) obj).yearOfBirth) {
+            if (this.hashCode() == obj.hashCode()) {
+                return true;
+            }
+        }
+        return false;
         // --end-->
     }
 
@@ -50,9 +60,7 @@ public class PersonForEquals {
     public int hashCode() {
         // TODO: please modify the following code to pass the test
         // <--start
-        return this.name.hashCode()+this.yearOfBirth;
-        //(int)Integer.valueOf(this.name.codePoints().mapToObj(String::valueOf).reduce("", String::concat).concat(String.valueOf(this.yearOfBirth)));
-//        throw new NotImplementedException();
+        return this.yearOfBirth+name.codePointCount(0,name.codePoints().sum());
         // --end-->
     }
 }

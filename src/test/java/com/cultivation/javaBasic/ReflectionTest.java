@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ReflectionTest {
     @Test
@@ -48,7 +47,7 @@ class ReflectionTest {
 
         // TODO: please created an instance described by `theClass`
         // <--start
-        Employee instance = new Employee();
+        Employee instance = (Employee) theClass.newInstance();
         // --end-->
 
         assertEquals("Employee", instance.getTitle());
@@ -85,7 +84,7 @@ class ReflectionTest {
 
         // TODO: please get the value of `getTitle` method using reflection. No casting to Employee is allowed.
         // <--start
-        Object result = employee.getTitle();
+        Object result = employee.getClass().getDeclaredMethod("getTitle").invoke(employee);
         // --end-->
 
         assertEquals("Employee", result);
@@ -104,21 +103,36 @@ class ReflectionTest {
         assertEquals(Employee.class, itemClass);
     }
 
-    @SuppressWarnings({"ConstantConditions", "unused"})
+
     @Test
-    void should_be_able_to_get_the_methods_who_contains_MyAnnotation_annotation() {
-        Class<MethodWithAnnotation> theClass = MethodWithAnnotation.class;
+    void should_get_method_with_annotation() {
+        TestAnnotationMethod testAnnotationMethod = new TestAnnotationMethod();
 
-        // TODO: please get the methods who contains MyAnnotation annotation.
-        // <--start
-        List<String> methods = Arrays.stream(theClass.getMethods()).filter(i->i.isAnnotationPresent(MyAnnotation.class)).map(Method::getName).sorted().collect(Collectors.toList());
-        String[] methodsContainsAnnotations = new String[methods.size()];
-        for (int i = 0; i < methods.size(); i++) {
-            methodsContainsAnnotations[i] = methods.get(i);
+        Method[] allMethods = testAnnotationMethod.getClass().getDeclaredMethods();
+        List<String> allAnnotatedMethods = Arrays.stream(allMethods).filter(i->i.isAnnotationPresent(SurpriseAnnotation.class)).map(i->i.getName()).collect(Collectors.toList());
+
+        String[] result = new String[allAnnotatedMethods.size()];
+        for (int i = 0; i < allAnnotatedMethods.size(); i++) {
+            result[i] = allAnnotatedMethods.get(i);
         }
-        // --end-->
 
-        assertArrayEquals(new String[] {"theMethod"}, methodsContainsAnnotations);
+        String[] expectedAnnotatedMethods = new String[]{"toTestSurpriseAnnotation", "toTestSecondMethodAnnotation"};
+        assertEquals(expectedAnnotatedMethods[1], result[1]);
+    }
+
+    @Test
+    void should_not_equal_when_have_parent_type_array() {
+        ChildrenTest[] childrenTests = new ChildrenTest[2];
+        ParentTest[] parentTests = new ParentTest[4];
+
+        Class<?> classOfChildrenArray = childrenTests.getClass().getSuperclass();
+        Class<? extends ParentTest[]> classOfParentArray = parentTests.getClass();
+
+        Class<?> classOfChildrenComponent = childrenTests.getClass().getComponentType().getSuperclass();
+        Class<?> classOfParentComponent = parentTests.getClass().getComponentType();
+
+        assertNotEquals(classOfChildrenArray, classOfParentArray);
+        assertEquals(classOfChildrenComponent, classOfParentComponent);
     }
 }
 
