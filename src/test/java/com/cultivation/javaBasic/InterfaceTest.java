@@ -2,9 +2,13 @@ package com.cultivation.javaBasic;
 
 import com.cultivation.javaBasic.showYourIntelligence.NameImpl;
 import com.cultivation.javaBasic.util.*;
+import com.sun.corba.se.spi.ior.ObjectKey;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import javax.naming.Name;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class InterfaceTest {
 
@@ -51,6 +55,14 @@ class InterfaceTest {
         String name = instance.getName();
 
         assertEquals("Person", name);
+    }
+
+    @Test
+    void should_be_able_to_clone_an_object () throws CloneNotSupportedException{
+        CloneObj originalObj = new CloneObj();
+        Object cloneObj = originalObj.clone();
+
+        assertNotEquals(originalObj, cloneObj);
     }
 }
 
