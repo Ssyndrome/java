@@ -5,6 +5,7 @@ import com.cultivation.javaBasic.util.*;
 import org.junit.jupiter.api.Test;
 import sun.net.ExtendedOptionsImpl;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -275,6 +276,19 @@ class InheritanceTest {
         assertNotEquals(person.hashCode(), different1.hashCode());
         assertNotEquals(person.hashCode(), different2.hashCode());
         assertEquals(person.hashCode(), samePerson.hashCode());
+    }
+
+    @Test
+    void name() {
+
+        PersonForEquals person = new PersonForEquals("James", (short) 1990);
+        PersonForEquals different1 = new PersonForEquals("James", (short) 1992);
+        PersonForEquals different2 = new PersonForEquals("Alice", (short) 1995);
+
+        PersonForEquals[] personForEquals = new PersonForEquals[]{person, different1, different2};
+        Arrays.sort(personForEquals);
+
+        assertArrayEquals(new PersonForEquals[]{different2, person, different1}, personForEquals);
     }
 }
 

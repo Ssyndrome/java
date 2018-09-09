@@ -43,7 +43,7 @@ class ExceptionTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final int expectedResult = Integer.MAX_VALUE;
+        final int expectedResult = 0;
         // --end-->
 
         assertEquals(expectedResult, confusedResult);
@@ -60,7 +60,7 @@ class ExceptionTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Boolean> expected = Optional.empty();
+        final Optional<Boolean> expected = Optional.of(true);
         // --end-->
 
         assertEquals(expected.get(), closableStateReference.isClosed());
@@ -81,7 +81,7 @@ class ExceptionTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String[] expected = {};
+        final String[] expected = {"ClosableWithException.close", "ClosableWithoutException.close"};
         // --end-->
 
         assertArrayEquals(
@@ -98,6 +98,7 @@ class ExceptionTest {
             methodName);
     }
 
+    // https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html
     @SuppressWarnings({"ReturnInsideFinallyBlock", "SameParameterValue"})
     private int confuse(int value) {
         try {
@@ -111,7 +112,7 @@ class ExceptionTest {
 }
 
 /*
- * - Please draw the hibachi of `Throwable` and explain the main purpose for each type.
+ * - Please draw the ≈ of `Throwable` and explain the main purpose for each type.
  * - When do you have to declare a exception in the method signature.
  * - When you declare a class A in package PA, and A contains a method
  *   `callMeToDeath() throw FileNotFoundException`. Package PB imports PA and uses
