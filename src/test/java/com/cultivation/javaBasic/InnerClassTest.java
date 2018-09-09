@@ -10,6 +10,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.1.3
+
 class InnerClassTest {
     @SuppressWarnings("ConstantConditions")
     @Test
@@ -19,7 +21,7 @@ class InnerClassTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Integer> expected = Optional.empty();
+        final Optional<Integer> expected = Optional.of(2019);
         // --end-->
 
         assertEquals(expected.get().intValue(), instance.getYear());
@@ -35,7 +37,7 @@ class InnerClassTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Integer> expected = Optional.empty();
+        final Optional<Integer> expected = Optional.of(2019);
         // --end-->
 
         assertEquals(expected.get().intValue(), instance.getYear());
@@ -49,7 +51,7 @@ class InnerClassTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Integer> expected = Optional.empty();
+        final Optional<Integer> expected = Optional.of(2019);
         // --end-->
 
         assertEquals(expected.get().intValue(), instance.getYear());
@@ -63,7 +65,7 @@ class InnerClassTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final Optional<Integer> expected = Optional.empty();
+        final Optional<Integer> expected = Optional.of(2019);
         // --end-->
 
         assertEquals(expected.get().intValue(), instance.getYear());
@@ -76,7 +78,7 @@ class InnerClassTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String expected = null;
+        final String expected = "Hello";
         // --end-->
 
         assertEquals(expected, inner.getName());
