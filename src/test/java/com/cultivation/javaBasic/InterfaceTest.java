@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.naming.Name;
 
+import java.lang.annotation.Annotation;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InterfaceTest {
@@ -62,7 +64,8 @@ class InterfaceTest {
         CloneObj originalObj = new CloneObj();
         Object cloneObj = originalObj.clone();
 
-        assertNotEquals(originalObj, cloneObj);
+        assertNotEquals(originalObj, (CloneObj) cloneObj);
+        System.out.print(Annotation.class.toString());
     }
 }
 

@@ -6,8 +6,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.awt.image.BufferedImage;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
 import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.stream.Stream;
@@ -94,7 +97,7 @@ class StringTest {
 
         // TODO: Take part of the original string according to expectation.
         // <--start
-        final String partOfString = originalString.substring(5,7);
+        final String partOfString = originalString.substring(5, 7);
         // --end-->
 
         final String expectedString = "is";
@@ -120,7 +123,7 @@ class StringTest {
         String[] words = sentence.split(" ");
         // --End-->
 
-        assertArrayEquals(new String[] {"This", "is", "Mike"}, words);
+        assertArrayEquals(new String[]{"This", "is", "Mike"}, words);
     }
 
     @SuppressWarnings({"unused", "ConstantConditions"})
@@ -133,7 +136,7 @@ class StringTest {
         String[] words = sentence.split("/");
         // --End-->
 
-        assertArrayEquals(new String[] {"This", "is", "Mike"}, words);
+        assertArrayEquals(new String[]{"This", "is", "Mike"}, words);
     }
 
     @SuppressWarnings({"unused", "StringBufferReplaceableByString", "MismatchedQueryAndUpdateOfStringBuilder"})
@@ -146,19 +149,19 @@ class StringTest {
         // <--Start
         StringBuilder builder = new StringBuilder();
         for (int row = 1; row <= height; row++) {
-                builder.append("|");
+            builder.append("|");
 
             for (int column = 3; column <= width; column++) {
                 builder.append(row == 1 || row == height ? "-" : " ");
             }
-                builder.append("|\n");
+            builder.append("|\n");
         }
         // --End-->
 
         final String expected =
-            "|---|\n" +
-            "|   |\n" +
-            "|---|\n";
+                "|---|\n" +
+                        "|   |\n" +
+                        "|---|\n";
 
         assertEquals(expected, builder.toString());
     }
@@ -210,17 +213,17 @@ class StringTest {
 
     @Test
     void should_change_the_value_in_a_final_array() {
-        final char[] value = new char[]{'6','5','4','3','2','1'};
+        final char[] value = new char[]{'6', '5', '4', '3', '2', '1'};
         // When new a originalValue equal value, it goes wrong.
-        final char[] originalValue = new char[]{'6','5','4','3','2','1'};// Arrays.copyOf(value);
+        final char[] originalValue = new char[]{'6', '5', '4', '3', '2', '1'};// Arrays.copyOf(value);
 
-        int point = value.length-1;
+        int point = value.length - 1;
         for (int i = 0; i < value.length; i++) {
             value[i] = originalValue[point];
             point--;
         }
 
-        char[] expectCanChange = new char[]{'1','2','3','4','5','6'};
+        char[] expectCanChange = new char[]{'1', '2', '3', '4', '5', '6'};
 
         for (int i = 0; i < expectCanChange.length; i++) {
             assertEquals(expectCanChange[i], value[i]);
@@ -249,7 +252,7 @@ class StringTest {
     @Test
     void should_get_code_point_count() {
         final String withSurrogatePairs =
-            new String(Character.toChars(0x20B9F)) + " is a character that you may not know";
+                new String(Character.toChars(0x20B9F)) + " is a character that you may not know";
 
         // TODO: please modify the following code to pass the test
         // <--start
@@ -266,13 +269,13 @@ class StringTest {
     @Test
     void should_copy_all_code_point_to_array() {
         final String withSurrogatePairs =
-            new String(Character.toChars(0x20B9F)) + " is funny";
+                new String(Character.toChars(0x20B9F)) + " is funny";
 
         final int[] codePoints = getCodePointsFromString(withSurrogatePairs);
 
         assertArrayEquals(
-            new int[] {0x20B9F, (int)' ', (int)'i', (int)'s', (int)' ', (int)'f', (int)'u', (int)'n', (int)'n', (int)'y'},
-            codePoints);
+                new int[]{0x20B9F, (int) ' ', (int) 'i', (int) 's', (int) ' ', (int) 'f', (int) 'u', (int) 'n', (int) 'n', (int) 'y'},
+                codePoints);
     }
 
     @Test
@@ -291,19 +294,17 @@ class StringTest {
     }
 
     private int[] getCodePointsFromString(String withSurrogatePairs) {
-        // TODO: please implement the method to the pass the test
-        // <--start
-        // TODO: for loop to achieve
-        int resultLen = (int) withSurrogatePairs.codePoints().count();
-        int[] resultArr = new int[resultLen];
+        List<Integer> codePointsList = new ArrayList<>();
         int charIndex = 0;
-        for (int i = 0; i < resultLen; i++) {
-            resultArr[i] = withSurrogatePairs.codePointAt(charIndex);
-            charIndex = resultArr[i] > 0xffff ? charIndex+2 : charIndex+1;
+
+        for (int codePointIndex = 0; charIndex < withSurrogatePairs.length(); codePointIndex ++) {
+            codePointsList.add(codePointIndex, withSurrogatePairs.codePointAt(charIndex));
+            charIndex += Character.charCount(withSurrogatePairs.codePointAt(charIndex));
         }
-        return resultArr;
-//        return withSurrogatePairs.codePoints().toArray();
-        // --end-->
+
+
+
+        return codePointsList.stream().mapToInt(Integer::valueOf).toArray();
     }
 
     /*
