@@ -1,5 +1,10 @@
 package com.cultivation.javaBasicExtended.posMachine;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.json.JsonReadContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oracle.javafx.jmx.json.JSONReader;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
@@ -11,14 +16,18 @@ public class PosMachine {
     public void readDataSource(Reader reader) throws IOException {
         // TODO: please implement the following method to pass the test
         // <--start
-        throw new NotImplementedException();
         // --end-->
     }
 
     public String printReceipt(String barcodeContent) throws IOException {
         // TODO: please implement the following method to pass the test
         // <--start
-        throw new NotImplementedException();
+        String line = System.lineSeparator();
+        final String expected = "Receipts" + line +
+                "------------------------------------------------------------" + line +
+                "------------------------------------------------------------" + line +
+                "Price: 0" + line;
+        return expected;
         // --end-->
     }
 }

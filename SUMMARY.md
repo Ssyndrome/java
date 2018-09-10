@@ -11,7 +11,7 @@ Why to modify this way
 
 1.1 Range of primitive Integer type (byte, int, short, long, double, float)
 
-1.2 The difference between  `>>>` `>>` `<< `  
+1.2 The diff`erence between  `>>>` `>>` `<< `  
 
 1.3 How to prove that first digit determine the symbol of hexadecimal number
 
