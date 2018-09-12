@@ -3,22 +3,39 @@ package com.cultivation.javaBasic.util;
 public class InnerClassUpdateField {
     private int year;
 
-    public InnerClassUpdateField() {
-        year = 2018;
+    public InnerClassUpdateField(int year) {
+        this.year = year;
     }
 
     public int getYear() {
         return year;
     }
 
-    public void somethingHappen() {
-        this.new YearIncrementer().increment();
+    public void add() {
+        class InnerClass{
+
+            final static private int yeah = 3;
+
+            public InnerClass(int year) {
+            }
+
+            public void add(){
+            }
+
+        }
+        new InnerClass(2).add();
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public class YearIncrementer {
-        public void increment() {
-            ++InnerClassUpdateField.this.year;
+    public class InnerClass {
+        private int year;
+        final static private int yeah = 3;
+        public InnerClass(int year) {
+            this.year = year;
         }
+
+        public void add() {
+            InnerClassUpdateField.this.year += this.year;
+        }
+
     }
 }

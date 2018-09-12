@@ -4,11 +4,10 @@ import com.cultivation.javaBasic.showYourIntelligence.DistinctIterable;
 import com.cultivation.javaBasic.showYourIntelligence.Sequence;
 import com.cultivation.javaBasic.util.RandomCharacterIterable;
 import org.junit.jupiter.api.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CollectionsTest {
     @Test
@@ -29,7 +28,10 @@ class CollectionsTest {
         // TODO: you could ONLY use `Iterator.hasNext` and `Iterator.next` API to copy items to a `List`. No `for` is
         // allowed.
         // <--start
-
+        while (iterator.hasNext()) {
+            list.add(iterator.next());
+            iterator.remove();
+        }
         // --end-->
 
         return list;
@@ -57,7 +59,7 @@ class CollectionsTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final List<String> expected = Arrays.asList("I", "Don't", "Know");
+        final List<String> expected = Arrays.asList("Amy", "Bob", "Carl");
         // --end-->
 
         assertIterableEquals(expected, staff);
@@ -78,6 +80,15 @@ class CollectionsTest {
     }
 
     @Test
+    void should_generate_yotta_byte_number_list() {
+        final double endNumber = Math.pow(2, 40);
+        YottaByteNumber yottaByteNumber = new YottaByteNumber(endNumber);
+        List<Double> yottaList = yottaByteNumber.toList();
+
+        assertEquals(16, yottaList.size());
+    }
+
+    @Test
     void should_reflects_back_to_original_list_for_sub_range() {
         List<Integer> integers = new ArrayList<>();
         for (int i = 0; i < 12; ++i) {
@@ -89,10 +100,20 @@ class CollectionsTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final List<Integer> expected = Arrays.asList(0, 0, 0);
+        final List<Integer> expected = Arrays.asList(0, 1, 2, 10, 11);
         // --end-->
 
         assertIterableEquals(expected, integers);
+    }
+
+    @Test
+    void should_be_immutable_for_Integer() {
+        Integer syn = new Integer(1);
+        syn ++;
+
+        assertEquals(new Integer(2), syn);
+        assertFalse(new Integer(2) == syn);
+        assertTrue(Integer.valueOf(2) == syn);
     }
 }
 

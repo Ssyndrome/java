@@ -51,7 +51,7 @@ class FloatingTypeTest {
         final float doubleToFloat = (float) integerDouble;
 
 
-        // TODO: Please change the result to pass the test.
+        // TODO: Please change the integerIterator to pass the test.
         // <!--start
         final int expected = 2;
         // --end-->
@@ -77,7 +77,7 @@ class FloatingTypeTest {
         final float floatingPointNumber = 2.75f;
         final int integer = (int)floatingPointNumber;
 
-        // TODO: Please change the result to pass the test.
+        // TODO: Please change the integerIterator to pass the test.
         // <!--start
         final int expected = 2;
         // --end-->

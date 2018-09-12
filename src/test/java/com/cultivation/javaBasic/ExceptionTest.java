@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ExceptionTest {
     @Test
     void should_customize_exception() {
         try {
-            throw new StringFormatException("the message");
+            throw new StringFormatException("this message");
         } catch (StringFormatException error) {
-            assertEquals("the message", error.getMessage());
+            assertEquals("this message", error.getMessage());
+            assertNull(error.getCause());
         }
     }
 
     @Test
     void should_customize_exception_continued() {
         Exception innerError = new Exception("inner error");
+
 
         try {
             throw new StringFormatException("the message", innerError);
@@ -53,9 +53,13 @@ class ExceptionTest {
     @Test
     void should_use_the_try_pattern() {
         ClosableStateReference closableStateReference = new ClosableStateReference();
-        try (MyClosableType closable = new MyClosableType(closableStateReference))
-        {
+        MyClosableType closableType = null;
+        try (MyClosableType closable = new MyClosableType(closableStateReference)) {
             assertFalse(closable.isClosed());
+            closableType = closable;
+            throw new Exception();
+        } catch (Exception error) {
+            assertTrue(closableType.isClosed());
         }
 
         // TODO: please modify the following code to pass the test
@@ -71,17 +75,13 @@ class ExceptionTest {
     void should_call_closing_even_if_exception_throws() throws Exception {
         ArrayList<String> logger = new ArrayList<>();
 
-        try {
-            try (AutoCloseable withoutThrow = new ClosableWithoutException(logger);
-                 AutoCloseable withThrow = new ClosableWithException(logger)) {
-            }
-        } catch (Exception e) {
-            // It is okay!
+        try (AutoCloseable withoutThrow = new ClosableWithoutException(logger);
+             AutoCloseable withThrow = null) {
         }
 
         // TODO: please modify the following code to pass the test
         // <--start
-        final String[] expected = {"ClosableWithException.close", "ClosableWithoutException.close"};
+        final String[] expected = {"ClosableWithoutException.close"};
         // --end-->
 
         assertArrayEquals(
@@ -98,15 +98,15 @@ class ExceptionTest {
             methodName);
     }
 
+
+
     // https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html
     @SuppressWarnings({"ReturnInsideFinallyBlock", "SameParameterValue"})
     private int confuse(int value) {
         try {
-            return value * value;
+            throw new RuntimeException("test");
         } finally {
-            if (value == 2) {
                 return 0;
-            }
         }
     }
 }

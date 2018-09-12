@@ -256,9 +256,9 @@ class StringTest {
 
         // TODO: please modify the following code to pass the test
         // <--start
-        // TODO: please write down the result directly.
+        // TODO: please write down the integerIterator directly.
         final int expectedCharLength = 39;
-        // TODO: please call some method to calculate the result.
+        // TODO: please call some method to calculate the integerIterator.
         final int actualCodePointLength = (int) withSurrogatePairs.codePoints().count();
         // --end-->
 

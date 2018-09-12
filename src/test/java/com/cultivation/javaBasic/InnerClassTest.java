@@ -13,34 +13,38 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 // https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.1.3
 
 class InnerClassTest {
-    @SuppressWarnings("ConstantConditions")
+    /*@SuppressWarnings("ConstantConditions")
     @Test
     void should_access_instance_field_of_parent_class() {
-        InnerClassUpdateField instance = new InnerClassUpdateField();
-        instance.somethingHappen();
+        InnerClassUpdateField innerClassUpdateField = new InnerClassUpdateField();
+        innerClassUpdateField.new InnerClass().increment();
 
-        // TODO: please modify the following code to pass the test
-        // <--start
-        final Optional<Integer> expected = Optional.of(2019);
-        // --end-->
+        assertEquals(2020, innerClassUpdateField.getCurrentYear());
+    }*/
 
-        assertEquals(expected.get().intValue(), instance.getYear());
-    }
-
-    @SuppressWarnings("ConstantConditions")
+    /*@SuppressWarnings("ConstantConditions")
     @Test
     void should_refer_inner_class_from_outside() {
-        InnerClassUpdateField instance = new InnerClassUpdateField();
+        InnerClassUpdateField innerClassUpdateField = new InnerClassUpdateField(2018);
+        innerClassUpdateField.new InnerClass(2);
 
-        InnerClassUpdateField.YearIncrementer incrementer = instance.new YearIncrementer();
-        incrementer.increment();
+        assertEquals(2020, innerClassUpdateField.getYear());
+    }*/
 
-        // TODO: please modify the following code to pass the test
-        // <--start
-        final Optional<Integer> expected = Optional.of(2019);
-        // --end-->
+    @Test
+    void should_refer_outer_class_field() {
+        InnerClassUpdateField innerClassUpdateField = new InnerClassUpdateField(2018);
+        innerClassUpdateField.new InnerClass(2).add();
 
-        assertEquals(expected.get().intValue(), instance.getYear());
+        assertEquals(2020, innerClassUpdateField.getYear());
+    }
+
+    @Test
+    void should_invoke_inner_method_from_outer_method() {
+        InnerClassUpdateField innerClassUpdateField = new InnerClassUpdateField(2018);
+        innerClassUpdateField.add();
+
+        assertEquals(2020, innerClassUpdateField.getYear());
     }
 
     @SuppressWarnings("ConstantConditions")

@@ -118,7 +118,7 @@ class ObjectTest {
 
         String actual = fixture.methodWithOneParameter((Object) "I am a string");
 
-        // TODO: please modify the following code to pass the test. You should write the result directly.
+        // TODO: please modify the following code to pass the test. You should write the integerIterator directly.
         // <--start
         final String expected = "methodWithOneParameter(Object)";
         // --end-->
@@ -134,7 +134,7 @@ class ObjectTest {
 
         String actual = fixture.methodWithTwoParameters(name, integer);
 
-        // TODO: please modify the following code to pass the test. You should write the result directly.
+        // TODO: please modify the following code to pass the test. You should write the integerIterator directly.
         // <--start
         final String expected = "methodWithTwoParameters(String, int)";
         // --end-->

@@ -78,7 +78,7 @@ abstract class SimpleMvcHttpHandler implements HttpHandler {
         try {
             Object result = method.invoke(controller, context.getRequest());
 
-            // TODO: please serialize the returned result to JSON string using Jackson.
+            // TODO: please serialize the returned integerIterator to JSON string using Jackson.
             // <--start
             String json = null;
             // --end-->

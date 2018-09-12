@@ -111,7 +111,7 @@ class IntegerTypeTest {
 
         // TODO: Please correct the value to pass the test.
         // <--start
-        // to avoid overflow, we can use Math.addExact(a,b) to throws a exception. If you want to see result, you can use BigInteger or long type instead.
+        // to avoid overflow, we can use Math.addExact(a,b) to throws a exception. If you want to see integerIterator, you can use BigInteger or long type instead.
         final int expectedResult = Integer.MIN_VALUE;
         // --end-->
 
