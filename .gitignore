@@ -32,6 +32,10 @@ cmake-build-release/
 # IntelliJ
 out/
 
+# secret homework
+src/test/java/com/cultivation/javaBasicExtended/wordProcessor/
+src/test/java/com/cultivation/javaBasicExtended/wordProcessorWithoutSeparating/
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 

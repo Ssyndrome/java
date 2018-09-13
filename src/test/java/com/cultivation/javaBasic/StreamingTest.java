@@ -1,13 +1,11 @@
 package com.cultivation.javaBasic;
 
-import com.cultivation.javaBasic.showYourIntelligence.StringFormatException;
 import com.cultivation.javaBasic.util.AnimeCharacter;
 import com.cultivation.javaBasic.util.KeyValuePair;
 import com.cultivation.javaBasic.util.ValueHolder;
 import org.junit.jupiter.api.Test;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.time.temporal.ChronoField;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -356,7 +354,7 @@ class StreamingTest {
         // TODO: In the `Runnable` object. Please throw IllegalStateException when `empty` is not present.
         // <--start
         Runnable emptyRunnable = () -> {
-            if (!empty.isPresent()) throw new IllegalStateException();
+            empty.orElseThrow(IllegalStateException::new);
         };
         // --end-->
 
@@ -394,14 +392,8 @@ class StreamingTest {
         // TODO: please add the upper-cased value to `integerIterator` list if optional is present. Then return the boolean
         // TODO: mapping integerIterator of `integerIterator.add`.
         // <--start
-        Function<Optional<String>, Optional<Boolean>> mapping = (stringOptional) -> {
-            if (stringOptional.isPresent()){
-                result.add(stringOptional.get().toUpperCase());
-                return Optional.of(true);
-            }else {
-                return Optional.empty();
-            }
-        };
+        Function<Optional<String>, Optional<Boolean>> mapping = (stringOptional) ->
+            stringOptional.map(string -> result.add(string.toUpperCase()));
         // --end-->
 
         Optional<Boolean> mappingResult = mapping.apply(optional);
@@ -426,12 +418,10 @@ class StreamingTest {
         // TODO: `YieldOptional.get` method. Otherwise, returns empty Optional.
         // <--start
         Function<Stream<YieldOptional>, Optional<String>> findFirstAndGet = yieldOptionalStream -> {
-            if (yieldOptionalStream.findFirst().isPresent()) {
-                return new YieldOptional().get();
-            }else {
-                return Optional.empty();
-            }
+            Optional<YieldOptional> firstElement = yieldOptionalStream.findFirst();
+            return firstElement.flatMap(YieldOptional::get);
         };
+
         // --end-->
 
         Optional<String> emptyStreamResult = findFirstAndGet.apply(emptyStream);
@@ -445,18 +435,32 @@ class StreamingTest {
     @SuppressWarnings({"ConstantConditions", "unused"})
     @Test
     void should_collect_result() {
-        Stream<String> stream = Stream.of("Hello", "What", "is", "your", "name");
+        int[] count = {0, 0, 0};
+        Stream<String> stringStream = Stream.of("a", "b", "c", "x", "y", "z");
 
-        // TODO: please implement toList collector using `stream.collect`. You cannot use existing `toList` collector.
-        // <--start
-        ArrayList<String> list = stream.collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        // --end-->
+        List<String> strings = stringStream.parallel().collect(
+                () -> {
+                    count[0]++;
+                    return new ArrayList<>();
+                },
+                (stringList, itemString) -> {
+                    count[1]++;
+                    stringList.add(itemString);
+                },
+                (stringList, otherStringList) -> {
+                    count[2]++;
+                    stringList.addAll(otherStringList);
+                });
 
-        assertEquals(ArrayList.class, list.getClass());
-        assertIterableEquals(
-            Arrays.asList("Hello", "What", "is", "your", "name"),
-            list
-        );
+        assertIterableEquals(Arrays.asList("a", "b", "c", "x", "y", "z"), strings);
+
+        int expectedRuntimeForNew = strings.size();
+        int expectedRuntimeForAdd = strings.size();
+        int expectedRuntimeForAddAll = expectedRuntimeForNew - 1;
+
+        assertEquals(expectedRuntimeForNew, count[0]);
+        assertEquals(expectedRuntimeForAdd, count[1]);
+        assertEquals(expectedRuntimeForAddAll, count[2]);
     }
 
     @SuppressWarnings({"ConstantConditions", "unused"})
@@ -465,22 +469,28 @@ class StreamingTest {
         Stream<KeyValuePair<String, Integer>> stream = Stream.of(
             new KeyValuePair<>("Harry", 2002),
             new KeyValuePair<>("Bob", 2014),
-            new KeyValuePair<>("Harry", 2033)
+            new KeyValuePair<>("Harry", 2033),
+            new KeyValuePair<>("Bob", 2033),
+            new KeyValuePair<>("Bob", 2055)
         ).parallel();
 
         // TODO: please implement toMap collector using `stream.collect`. You cannot use existing `toMap` collector.
         // <--start
-        HashMap<String, Integer> map = stream.collect(HashMap::new, (hashMap, valuePair) -> {
-                hashMap.put(valuePair.getKey(),valuePair.getValue());
-
-        }, HashMap::putAll);
+        HashMap<String, Integer> map = stream.collect(
+                HashMap::new,
+                (hashMap, value) -> {
+                    hashMap.put(value.getKey(), value.getValue());
+                },
+                HashMap::putAll
+                );
         // --end-->
+
 
         assertEquals(2, map.size());
         assertTrue(map.containsKey("Harry"));
         assertEquals(2033, map.get("Harry").intValue());
         assertTrue(map.containsKey("Bob"));
-        assertEquals(2014, map.get("Bob").intValue());
+        assertEquals(2055, map.get("Bob").intValue());
     }
 
     @SuppressWarnings({"ConstantConditions", "unused"})
@@ -534,7 +544,14 @@ class StreamingTest {
 
         // TODO: implement grouping collector using `stream.collect`. This time please use `Collectors.groupingBy`
         // <--start
-        Map<String, List<Integer>> map = null;
+        Map<String, List<Integer>> map = stream.collect(Collectors.
+                groupingBy(
+                    KeyValuePair::getKey,
+                        Collectors.mapping(
+                        KeyValuePair::getValue,
+                           Collectors.toList()
+                )
+        ));
         // --end-->
 
         assertEquals(2, map.size());
