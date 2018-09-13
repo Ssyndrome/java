@@ -533,6 +533,46 @@ class StreamingTest {
         assertIterableEquals(Collections.singletonList(2014), map.get("Bob"));
     }
 
+    @Test
+    void should_produce_list_using_Collector_of() {
+        Stream<Integer> stream = IntStream.range(0, 10).boxed();
+
+        HashMap<Integer, List<Integer>> processedMap = stream.collect(
+                Collector.of(
+                        HashMap::new,
+                        (hashMap, value) -> {
+                            Integer remainderKey = value % 3;
+                            if (hashMap.containsKey(remainderKey)){
+                                List<Integer> originalNumbers = hashMap.get(remainderKey);
+                                originalNumbers.add(value);
+                                hashMap.put(remainderKey, originalNumbers);
+                            } else {
+                                List<Integer> numbers = new ArrayList<>();
+                                numbers.add(value);
+                                hashMap.put(remainderKey, numbers);
+                            }
+                        },
+                        (resultMap, waitMap) -> {
+                            waitMap.forEach( (waitKey, waitValue) -> {
+                                if (resultMap.containsKey(waitKey)) {
+                                    List<Integer> originalNumbers = resultMap.get(waitKey);
+                                    originalNumbers.addAll(waitValue);
+                                    resultMap.put(waitKey, originalNumbers);
+                                } else {
+                                    List<Integer> numbers = new ArrayList<>(waitValue);
+                                    resultMap.put(waitKey, numbers);
+                                }
+                            });
+                            return resultMap;
+                        }
+                ));
+
+        assertEquals(3, processedMap.size());
+        assertIterableEquals(Arrays.asList(0, 3, 6, 9), processedMap.get(0));
+        assertIterableEquals(Arrays.asList(1, 4, 7), processedMap.get(1));
+        assertIterableEquals(Arrays.asList(2, 5, 8), processedMap.get(2));
+    }
+
     @SuppressWarnings("ConstantConditions")
     @Test
     void should_collect_to_group_continued() {
@@ -559,6 +599,34 @@ class StreamingTest {
         assertIterableEquals(Collections.singletonList(2014), map.get("Bob"));
     }
 
+    @Test
+    void should_group_by_Collectors_of() {
+        Stream<KeyValuePair<String, Integer>> stream = Stream.of(
+                new KeyValuePair<>("Harry", 2002),
+                new KeyValuePair<>("Bob", 2014),
+                new KeyValuePair<>("Harry", 2033)
+        ).parallel();
+
+        Map<String, List<Integer>> map = stream.collect(
+                Collectors.groupingBy(
+                        KeyValuePair::getKey,
+                        Collector.of(
+                                ArrayList::new,
+                                (resultList, pair) -> {
+                                    resultList.add(pair.getValue());
+                                },
+                                (resultList, waitList) -> {
+                                    resultList.addAll(waitList);
+                                    return resultList;
+                                }
+                        )
+                ));
+
+        assertEquals(2, map.size());
+        assertIterableEquals(Arrays.asList(2002, 2033), map.get("Harry"));
+        assertIterableEquals(Collections.singletonList(2014), map.get("Bob"));
+    }
+
     @SuppressWarnings({"unused", "ConstantConditions"})
     @Test
     void should_calculate_number_in_each_group() {
@@ -571,7 +639,7 @@ class StreamingTest {
         // TODO: implement grouping collector using `stream.collect`. You should use `Collectors.groupingBy` and
         // TODO: downstream collector.
         // <--start
-        Map<String, Long> map = null;
+        Map<String, Long> map = stream.collect(Collectors.groupingBy(KeyValuePair::getKey, Collectors.counting()));
         // --end-->
 
         assertEquals(2, map.size());
@@ -591,7 +659,7 @@ class StreamingTest {
         // TODO: implement grouping collector using `stream.collect`. You should use `Collectors.groupingBy` and
         // TODO: downstream collector.
         // <--start
-        Map<String, Integer> map = null;
+        Map<String, Integer> map = stream.collect(Collectors.groupingBy(KeyValuePair::getKey, Collectors.summingInt(KeyValuePair::getValue)));
         // --end-->
 
         assertEquals(2, map.size());
